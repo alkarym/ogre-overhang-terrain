@@ -1,0 +1,9 @@
+# Resource locations to be added to the 'boostrap' path
+# This also contains the minimum you need to use the Ogre example framework
+[Bootstrap]
+Zip=${CMAKE_CURRENT_SOURCE_DIR}/media/OgreCore.zip
+
+# Resource locations to be added to the default path
+[General]
+FileSystem=${CMAKE_CURRENT_SOURCE_DIR}/media
+

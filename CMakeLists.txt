@@ -1,0 +1,62 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(overhangterrain-dev)
+
+SET(CPACK_PACKAGE_CONTACT "Patrick Charrier <patrick.charrier@gmail.com>")
+INCLUDE(CPack)
+
+# options
+OPTION(Boost_USE_STATIC_LIBS "Use Boost Static Libs" ON)
+OPTION(Boost_USE_MULTITHREADED "Use Boost Multithreaded Libs" ON)
+OPTION(Boost_USE_STATIC_RUNTIME "Use Boost Static Runtime" OFF)
+
+# use packages
+SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+FIND_PACKAGE(Boost COMPONENTS thread REQUIRED)
+FIND_PACKAGE(OGRE REQUIRED)
+
+# setup directories
+SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY
+   ${PROJECT_BINARY_DIR}/bin
+   CACHE PATH
+   "Single Directory for all Libraries"
+   )
+SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY
+   ${PROJECT_BINARY_DIR}/bin
+   CACHE PATH
+   "Single Directory for all Executables."
+   )
+SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+   ${PROJECT_BINARY_DIR}/lib
+   CACHE PATH
+   "Single Directory for all static libraries."
+   )
+
+# settings
+SET(CMAKE_BUILD_TYPE Release)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR} ${OGRE_INCLUDE_DIR} "${OGRE_INCLUDE_DIR}/OGRE" include)
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS} ${OGRE_LIB_DIR})
+
+# build library
+ADD_DEFINITIONS(-DOGRE_TERRAINPLUGIN_EXPORTS)
+FILE(GLOB_RECURSE src "src/*.cpp" "include/*.h")
+ADD_LIBRARY(OgreOverhangTerrain SHARED ${src})
+TARGET_LINK_LIBRARIES(OgreOverhangTerrain ${OGRE_LIBRARIES})
+
+# install
+INSTALL(TARGETS OgreOverhangTerrain DESTINATION lib)
+INSTALL(DIRECTORY "include/." DESTINATION "include/OgreOverhangTerrain" PATTERN "*.svn" EXCLUDE PATTERN "Makefile*" EXCLUDE)
+
+# build example
+ADD_SUBDIRECTORY(EditorSample)
+
+# OpenMP settings
+if(BUILD_WITH_OPENMP)
+  FIND_PACKAGE(OpenMP REQUIRED)
+  if(OPENMP_FOUND)
+    set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS})
+  endif(OPENMP_FOUND)
+  if(UNIX)
+    #TARGET_LINK_LIBRARIES(BeeGame gomp)
+    #ADD_DEFINITIONS(-D_GLIBCXX_PARALLEL) # CAUSING LINKER ERROR
+  endif(UNIX)
+endif(BUILD_WITH_OPENMP)

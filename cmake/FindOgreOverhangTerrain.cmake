@@ -1,0 +1,25 @@
+# - Find OgreOverhangTerrain
+# Find the native OgreOverhangTerrain includes and library
+#
+#   OGREOVERHANGTERRAIN_FOUND       - True if OgreOverhangTerrain found.
+#   OGREOVERHANGTERRAIN_INCLUDE_DIR - where to find includes
+#   OGREOVERHANGTERRAIN_LIBRARIES   - List of libraries when using OgreOverhangTerrain.
+#
+
+IF( OGREOVERHANGTERRAIN_INCLUDE_DIR )
+    # Already in cache, be silent
+    SET( OgreOverhangTerrain_FIND_QUIETLY TRUE )
+ENDIF( OGREOVERHANGTERRAIN_INCLUDE_DIR )
+
+FIND_PATH( OGREOVERHANGTERRAIN_INCLUDE_DIR "OverhangTerrainPlugin.h"
+           PATH_SUFFIXES "OgreOverhangTerrain" )
+
+FIND_LIBRARY( OGREOVERHANGTERRAIN_LIBRARY "OgreOverhangTerrain")
+SET(OGREOVERHANGTERRAIN_LIBRARIES ${OGREOVERHANGTERRAIN_LIBRARY})
+
+# handle the QUIETLY and REQUIRED arguments and set OGREOVERHANGTERRAIN_FOUND to TRUE if
+# all listed variables are TRUE
+INCLUDE( "FindPackageHandleStandardArgs" )
+FIND_PACKAGE_HANDLE_STANDARD_ARGS( "OgreOverhangTerrain" DEFAULT_MSG OGREOVERHANGTERRAIN_INCLUDE_DIR OGREOVERHANGTERRAIN_LIBRARY )
+
+MARK_AS_ADVANCED( OGREOVERHANGTERRAIN_INCLUDE_DIR OGREOVERHANGTERRAIN_LIBRARIES )
