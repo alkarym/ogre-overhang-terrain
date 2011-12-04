@@ -4,10 +4,14 @@ PROJECT(overhangterrain-dev)
 SET(CPACK_PACKAGE_CONTACT "Patrick Charrier <patrick.charrier@gmail.com>")
 INCLUDE(CPack)
 
-# options
+# boost settings
 OPTION(Boost_USE_STATIC_LIBS "Use Boost Static Libs" ON)
 OPTION(Boost_USE_MULTITHREADED "Use Boost Multithreaded Libs" ON)
 OPTION(Boost_USE_STATIC_RUNTIME "Use Boost Static Runtime" OFF)
+OPTION(Boost_DISABLE_AUTOLINKING "Disable Boost auto linking." ON)
+IF(Boost_DISABLE_AUTOLINKING)
+    ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB)
+ENDIF(Boost_DISABLE_AUTOLINKING)
 
 # use packages
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
